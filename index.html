@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terminal Sphere</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #000;               /* full black background */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    #output {
+      background-image: radial-gradient(
+        circle farthest-corner at 75% 75%,
+        rgba(0,0,16,1) 0%,
+        rgba(0,16,32,1) 50%,
+        rgba(0,64,48,1) 100%
+      );
+      border-radius: 100%;
+      color: rgb(32, 220, 128);
+      font-family: "Inconsolata", monospace;
+      font-size: 3vmin;
+      line-height: .55em;
+      white-space: pre;
+      text-rendering: optimizeSpeed;
+      will-change: contents;
+    }
+
+    canvas {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="output"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js"></script>
+
+  <script>
+  /** your JS from CodePen **/
+  function init() {
+    window.WIDTH = 48;
+    window.HEIGHT = 48;
+    window.scene = new THREE.Scene();
+    window.camera = new THREE.PerspectiveCamera(1, WIDTH / HEIGHT, 0.1, 1000);
+    window.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(WIDTH, HEIGHT);
+
+    var texture = new THREE.TextureLoader().load('data:image/jpeg;base64,REPLACE'); 
+    // paste your giant base64 string here, cut for clarity
+
+    document.body.appendChild(renderer.domElement);
+
+    camera.position.z = 5;
+
+    var geometry = new THREE.SphereGeometry(2, 32, 32);
+    var material = new THREE.MeshBasicMaterial({ map: texture });
+    var sphere = new THREE.Mesh(geometry, material);
+    scene.add(sphere);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      sphere.rotation.y += 0.005;
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  }
+
+  init();
+  </script>
+</body>
+</html>
